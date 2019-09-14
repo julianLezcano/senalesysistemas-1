@@ -16,3 +16,31 @@ Sine = sineSweep(10,44100,20,20000);
 filename = 'SineSweep1.wav';
 audiowrite(filename,Sine,44100);
 clear Sine Fs
+
+
+%OTRO ARCHIVO
+function x= filtroInverso(T,Fs,f1,f2)
+%cambiar nombre a filtroInvertido
+N = T*Fs;
+y = T:(-1)/Fs:0;
+% y = linspace(0,T,N);
+w1 = 2*pi*f1;
+w2 = 2*pi*f2;
+K = (T*w1)/(log(w2/w1));
+L = T/(log(w2/w1));
+x = sin(K*((exp(y/L))-1));
+end
+
+%OTRO ARCHIVO
+function k = filtroInverso2(T,Fs,f1,f2);
+%filtro inverso
+x = filtroInverso(T,Fs,f1,f2);
+y = sineSweep(T,Fs,f1,f2);
+w1 = 2*pi*f1;
+w2 = 2*pi*f2;
+K = (T*w1)/(log(w2/w1));
+L = T/(log(w2/w1));
+w = (K/L)*exp(y/L);
+m = w1./(2*pi*w);
+k = m.*x;
+end
